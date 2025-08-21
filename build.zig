@@ -24,10 +24,13 @@ pub fn build(b: *std.Build) void {
     const upstream_checknum = b.dependency("checknum", .{});
     const upstream = b.dependency("l8w8jwt", .{});
 
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addLibrary(.{
         .name = "l8w8jwt",
-        .optimize = optimize,
-        .target = target,
+        .linkage = .static,
+        .root_module = b.createModule(.{
+            .optimize = optimize,
+            .target = target,
+        }),
     });
 
     lib.addCSourceFiles(.{

@@ -24,16 +24,19 @@ pub fn build(b: *std.Build) void {
     const upstream_checknum = b.dependency("checknum", .{});
     const upstream = b.dependency("l8w8jwt", .{});
 
+    const lib_mod = b.createModule(.{
+        .optimize = optimize,
+        .target = target,
+        .link_libc = true,
+    });
+
     const lib = b.addLibrary(.{
         .name = "l8w8jwt",
         .linkage = .static,
-        .root_module = b.createModule(.{
-            .optimize = optimize,
-            .target = target,
-        }),
+        .root_module = lib_mod,
     });
 
-    lib.addCSourceFiles(.{
+    lib_mod.addCSourceFiles(.{
         .root = upstream.path("src"),
         .files = &.{
             "decode.c",
@@ -45,19 +48,17 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-    lib.linkLibrary(upstream_mbedtls.artifact("mbedtls"));
+    lib_mod.linkLibrary(upstream_mbedtls.artifact("mbedtls"));
 
-    lib.addIncludePath(upstream_chillbuff.path("include"));
-    lib.addIncludePath(upstream_checknum.path("include"));
-    lib.addIncludePath(upstream_jsmn.path("."));
-    lib.addIncludePath(upstream.path("include"));
+    lib_mod.addIncludePath(upstream_chillbuff.path("include"));
+    lib_mod.addIncludePath(upstream_checknum.path("include"));
+    lib_mod.addIncludePath(upstream_jsmn.path("."));
+    lib_mod.addIncludePath(upstream.path("include"));
 
     lib.installHeadersDirectory(upstream_chillbuff.path("include"), "", .{});
     lib.installHeadersDirectory(upstream_checknum.path("include"), "", .{});
     lib.installHeadersDirectory(upstream_jsmn.path("."), "", .{});
     lib.installHeadersDirectory(upstream.path("include"), "", .{});
-
-    lib.linkLibC();
 
     b.installArtifact(lib);
 }

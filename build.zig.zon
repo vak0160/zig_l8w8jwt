@@ -37,8 +37,8 @@
     // internet connectivity.
     .dependencies = .{
         .zig_mbedtls = .{
-            .url = "git+https://github.com/vak0160/zig_mbedtls.git#c0c9f5bde708066c96d954689fc24c16006fda19",
-            .hash = "zig_mbedtls-3.6.4-x3Hlys4aAABsHVbps0HHl5ZWCY8kiF4bm2rwkLTYIxGO",
+            .url = "git+https://github.com/vak0160/zig_mbedtls.git#20f627280e0ee643fd6d49dab294d1aa8772f20b",
+            .hash = "zig_mbedtls-3.6.4-x3HlygQbAAAKysVBUnDD8POLJ6P3VeUYFoMbMPqCp-j8",
         },
         .l8w8jwt = .{
             .url = "git+https://github.com/GlitchedPolygons/l8w8jwt.git?ref=2.5.0#ee445f6ea334aac03daa9cbc1efea630f7744aba",
